@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age Display</title>
+    <style>
+      button {
+        width: 200px;
+        height: 44px;
+        border: 5px black solid;
+        border-radius: 5px;
+        margin-top: 24px;
+      }
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <span id="greeting"></span>
+      <button onclick="goBack()">Back to form</button>
+    </div>
+
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+
+      function calculateAge(dob) {
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (
+          monthDiff < 0 ||
+          (monthDiff === 0 && today.getDate() < birthDate.getDate())
+        ) {
+          age--;
+        }
+        return age;
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const name = urlParams.get("name");
+      const dob = urlParams.get("dob");
+      if (name && dob) {
+        const age = calculateAge(dob);
+        document.getElementById(
+          "greeting"
+        ).textContent = `Hi ${name}, Your age is ${age}`;
+      } else {
+        document.getElementById("greeting").textContent =
+          "Name or date of birth not provided.";
+      }
+    </script>
+  </body>
+</html>
